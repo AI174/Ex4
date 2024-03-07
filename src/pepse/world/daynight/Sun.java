@@ -21,12 +21,12 @@ public class Sun {
         GameObject sun = new GameObject(Vector2.ZERO,new Vector2(SUN_RADIUS,SUN_RADIUS),
                 new OvalRenderable(Color.YELLOW));
         Vector2 initialSunCenter = new Vector2(windowDimensions.x()/2,
-                windowDimensions.y()*Terrain.START_HEIGHT_RATIO*0.5f);
+                windowDimensions.y()*Terrain.START_HEIGHT_RATIO*0.5f);  // here
         sun.setCenter(initialSunCenter);
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         sun.setTag(SUN_TAG);
         Vector2 cycleCenter = new Vector2(windowDimensions.x()/2,
-                windowDimensions.y()*(Terrain.START_HEIGHT_RATIO));
+                windowDimensions.y()*(Terrain.START_HEIGHT_RATIO));   // and here
         new Transition<>(sun,(Float angle) -> sun.setCenter
                 (initialSunCenter.subtract(cycleCenter)
                         .rotated(angle)
