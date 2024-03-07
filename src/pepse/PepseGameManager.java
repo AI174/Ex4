@@ -13,6 +13,7 @@ import pepse.world.Sky;
 import pepse.world.Terrain;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
+import pepse.world.daynight.SunHalo;
 
 import java.util.Random;
 
@@ -47,5 +48,9 @@ public class PepseGameManager extends GameManager {
         // making sun
         GameObject sun = Sun.create(windowDimensions,CYCLE_LENGTH);
         gameObjects().addGameObject(sun, Layer.BACKGROUND);
+
+        // making sun halo
+        GameObject sunHalo = SunHalo.create(sun);
+        gameObjects().addGameObject(sunHalo, Layer.BACKGROUND);
     }
 }
