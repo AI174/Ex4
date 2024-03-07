@@ -12,11 +12,13 @@ import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
 import pepse.world.daynight.Night;
+import pepse.world.daynight.Sun;
 
 import java.util.Random;
 
 public class PepseGameManager extends GameManager {
     public static final int MIN_X = 0;
+    private static final float CYCLE_LENGTH = 30f;
     private Vector2 windowDimensions;
 
     public static void main(String[] args) {
@@ -38,7 +40,12 @@ public class PepseGameManager extends GameManager {
             gameObjects().addGameObject(block,Layer.STATIC_OBJECTS);
         }
         // making night
-        GameObject night = Night.create(windowDimensions,30.0f);
-        gameObjects().addGameObject(night, Layer.FOREGROUND);  // appear in front of the main gameplay or background elements
+        GameObject night = Night.create(windowDimensions, CYCLE_LENGTH);
+        // appear in front of the main gameplay or background elements
+        gameObjects().addGameObject(night, Layer.FOREGROUND);
+
+        // making sun
+        GameObject sun = Sun.create(windowDimensions,CYCLE_LENGTH);
+        gameObjects().addGameObject(sun, Layer.BACKGROUND);
     }
 }
