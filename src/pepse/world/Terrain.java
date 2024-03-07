@@ -32,7 +32,7 @@ public class Terrain {
         List<Block> groundBlocks = new ArrayList<>();
         minX = (int) Math.floor((double) minX / Block.SIZE) * Block.SIZE;
         maxX = (int) Math.floor((double) maxX / Block.SIZE) * Block.SIZE;
-        for (int currX = minX; currX < maxX; currX += Block.SIZE) {
+        for (int currX = minX; currX <= maxX; currX += Block.SIZE) {
             int currY = (int) Math.floor( groundHeightAt(currX) / Block.SIZE) * Block.SIZE;
             // this is how they want it to be
             for (int i = 0; i < TERRAIN_DEPTH; i++) {

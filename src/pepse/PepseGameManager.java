@@ -34,7 +34,7 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
         // making ground
         Terrain terrain = new Terrain(windowDimensions,(int)new Random().nextGaussian());
-        for (Block block: terrain.createInRange(MIN_X,(int)windowDimensions.x() + Block.SIZE)){
+        for (Block block: terrain.createInRange(MIN_X,(int)windowDimensions.x())){
             gameObjects().addGameObject(block,Layer.STATIC_OBJECTS);
         }
         // making night
