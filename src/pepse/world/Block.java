@@ -7,7 +7,7 @@ import danogl.util.Vector2;
 
 public class Block extends GameObject {
     public static final int SIZE = 30;
-    public static final String BLOCK_TAG = "block";
+    private static final String BLOCK_TAG = "block";
 
     public Block(Vector2 topLeftCorner, Renderable renderable) {
         super(topLeftCorner, Vector2.ONES.mult(SIZE), renderable);

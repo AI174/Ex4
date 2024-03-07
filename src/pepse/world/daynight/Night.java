@@ -10,9 +10,10 @@ import java.awt.*;
 
 public class Night {
 
-    public static final String NIGHT_TAG = "night";
+    private static final String NIGHT_TAG = "night";
     private static final float MIDNIGHT_OPACITY = 0.5f;
     private static final float MIDDAY_OPACITY = 0f;
+    public static final int TRANSFER_FACTOR = 2;
 
     public static GameObject create(Vector2 windowDimensions, float cycleLength){
         // I'm not sure about cycleLength/2, seems more reasonable to me :
@@ -22,7 +23,7 @@ public class Night {
         night.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         night.setTag(NIGHT_TAG);
         new Transition<>(night,night.renderer()::setOpaqueness, MIDDAY_OPACITY, MIDNIGHT_OPACITY,
-                Transition.CUBIC_INTERPOLATOR_FLOAT,cycleLength/2,
+                Transition.CUBIC_INTERPOLATOR_FLOAT,cycleLength/ TRANSFER_FACTOR,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,null);
         return night;
     }

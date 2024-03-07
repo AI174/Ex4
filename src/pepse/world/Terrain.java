@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Terrain {
-    public static final float HEIGHT_RATIO_FOR_X_0 = (float)2 / 3;
+    private static final float HEIGHT_RATIO_FOR_X_0 = (float)2 / 3;
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final int TERRAIN_DEPTH = 20;
-    public static final String GROUND_TAG = "ground";
+    private static final String GROUND_TAG = "ground";
+    private static final int NOISE_FACTOR = 7;
     private final int groundHeightAtX0;
     private final NoiseGenerator noiseGenerator;
 
@@ -23,7 +24,7 @@ public class Terrain {
     }
 
     public float groundHeightAt(float x){
-        float noise = (float) noiseGenerator.noise(x, Block.SIZE * 7);
+        float noise = (float) noiseGenerator.noise(x, Block.SIZE * NOISE_FACTOR);
         return groundHeightAtX0 + noise;
     }
 
