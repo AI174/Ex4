@@ -28,6 +28,7 @@ public class Terrain {
     }
 
     public List<Block> createInRange(int minX,int maxX){
+        // not sure if I should add space between them
         List<Block> groundBlocks = new ArrayList<>();
         minX = (int) Math.floor((double) minX / Block.SIZE) * Block.SIZE;
         maxX = (int) Math.floor((double) maxX / Block.SIZE) * Block.SIZE;
