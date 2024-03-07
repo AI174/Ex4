@@ -11,6 +11,7 @@ import danogl.util.Vector2;
 import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
+import pepse.world.daynight.Night;
 
 import java.util.Random;
 
@@ -29,12 +30,15 @@ public class PepseGameManager extends GameManager {
         // initialize fields
         this.windowDimensions = windowController.getWindowDimensions();
         // making sky
-        GameObject sky = Sky.creat(windowDimensions);
+        GameObject sky = Sky.create(windowDimensions);
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
         // making ground
         Terrain terrain = new Terrain(windowDimensions,(int)new Random().nextGaussian());
         for (Block block: terrain.createInRange(MIN_X,(int)windowDimensions.x() + Block.SIZE)){
             gameObjects().addGameObject(block,Layer.STATIC_OBJECTS);
         }
+        // making night
+        GameObject night = Night.create(windowDimensions,30.0f);
+        gameObjects().addGameObject(night, Layer.FOREGROUND);  // appear in front of the main gameplay or background elements
     }
 }
