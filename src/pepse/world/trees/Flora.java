@@ -13,12 +13,11 @@ import java.util.function.Function;
 
 public class Flora{
 
-    private static final  Color LEAF_COLOR = new Color(50, 200, 30);
+
     private static final int TRUNK_HEIGHT_UPPER_BOUND = 180;
     private static final int TRUNK_HEIGHT_LOWER_BOUND = 100;
     private final Random random =new Random();
     private final Function<Float, Float> groundHeightAt;
-//    private final GameObjectCollection gameObjects;
     private final Vector2 windowDimensions;
 //    private final int seed;
 
@@ -26,7 +25,6 @@ public class Flora{
     public Flora(Function<Float, Float> groundHeightAt,Vector2 windowDimensions) {
 
         this.groundHeightAt = groundHeightAt;
-//        this.gameObjects = gameObjects;
         this.windowDimensions = windowDimensions;
     }
 
@@ -62,9 +60,15 @@ public class Flora{
 
     private List<GameObject> buildTreeLeafs(int x, int trunkHeight) {
         ArrayList<GameObject> leafs= new ArrayList<>();
-        for (int i = 0; i < ; i++) {
-            Leaf leaf = new Leaf();
-            leafs.add(leaf);
+        for (int i = x-90; i <=x+90 ; i+=30) {
+            for (int j = trunkHeight- 120;j<= trunkHeight + 120;j+=30){
+                float randomFloat = random.nextFloat();
+                if(randomFloat > 0.9f){
+                    Leaf leaf = new Leaf(new Vector2(i,j),Vector2.ONES.mult(30f));
+                    leafs.add(leaf);
+                }
+            }
+
 
         }
         return leafs;
