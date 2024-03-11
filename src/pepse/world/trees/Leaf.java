@@ -5,12 +5,11 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
 public class Leaf extends GameObject {
+    private static final String LEAF = "leaf";
+
     public Leaf(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable) {
         super(topLeftCorner, dimensions, renderable);
+        this.setTag(LEAF);
     }
 
-    @Override
-    public boolean shouldCollideWith(GameObject other) {
-        return !(other.getTag().equals("avatar"));
-    }
 }

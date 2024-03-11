@@ -72,8 +72,14 @@ public class PepseGameManager extends GameManager {
         Flora flora = new Flora(x -> (float)Math.floor(terrain.groundHeightAt(x) / Block.SIZE) * Block.SIZE,
                  windowDimensions);
 
-        for (GameObject tree:flora.createInRange(MIN_X, (int) windowDimensions.x())) {
-            gameObjects().addGameObject(tree);
+        for (GameObject obj:flora.createInRange(MIN_X, (int) windowDimensions.x())) {
+            if (obj.getTag().equals("leaf")){
+                gameObjects().addGameObject(obj,Layer.FOREGROUND);
+            }
+            else {
+                gameObjects().addGameObject(obj);
+            }
+
         }
 
     }

@@ -62,7 +62,11 @@ public class Flora{
 
     private List<GameObject> buildTreeLeafs(int x, int trunkHeight) {
         ArrayList<GameObject> leafs= new ArrayList<>();
+        for (int i = 0; i < ; i++) {
+            Leaf leaf = new Leaf();
+            leafs.add(leaf);
 
+        }
         return leafs;
     }
 
