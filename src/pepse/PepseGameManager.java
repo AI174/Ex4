@@ -15,7 +15,9 @@ import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
 import pepse.world.trees.Flora;
+import pepse.world.trees.Trunk;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class PepseGameManager extends GameManager {
@@ -54,20 +56,29 @@ public class PepseGameManager extends GameManager {
         GameObject sunHalo = SunHalo.create(sun);
         gameObjects().addGameObject(sunHalo, Layer.BACKGROUND);
 
-        // haya ?
+        // making avatar
         int place = 0 + Avatar.AVATAR_WIDTH;
         Vector2 downRightCorner = new Vector2(place, terrain.groundHeightAt(0));
         Avatar avatar = Avatar.create(downRightCorner,inputListener, imageReader);
         gameObjects().addGameObject(avatar);
 
-
+        // making energy counter
         TextRenderable textRenderable = new TextRenderable(Float.toString(0));
         GameObject numericCounter = new NumericCounter(textRenderable,avatar::getEnergy);
         numericCounter.setTopLeftCorner(new Vector2(50, 50));
         gameObjects().addGameObject(numericCounter, Layer.BACKGROUND );
 
-        int seed = 0;
-        Flora flora = new Flora(terrain::groundHeightAt, this.gameObjects(), windowDimensions,0);
+        // making trees
+        Flora flora = new Flora(x -> (float)Math.floor(terrain.groundHeightAt(x) / Block.SIZE) * Block.SIZE,
+                 windowDimensions);
+        ArrayList<ArrayList<GameObject>> trees = flora.createInRange(MIN_X, (int) windowDimensions.x());
+        for (GameObject trunk:trees.get(0)){
+            gameObjects().addGameObject(trunk);
+        }
+
+        for (GameObject leafs:trees.get(1)){
+            gameObjects().addGameObject(leafs,Layer.BACKGROUND); // check the layer later
+        }
 
     }
     @Override
