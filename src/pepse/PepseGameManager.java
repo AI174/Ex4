@@ -2,18 +2,19 @@ package pepse;
 
 import danogl.GameManager;
 import danogl.GameObject;
+import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
 import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
+import danogl.gui.rendering.TextRenderable;
 import danogl.util.Vector2;
-import pepse.world.Block;
-import pepse.world.Sky;
-import pepse.world.Terrain;
+import pepse.world.*;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
+import pepse.world.trees.Flora;
 
 import java.util.Random;
 
@@ -52,5 +53,27 @@ public class PepseGameManager extends GameManager {
         // making sun halo
         GameObject sunHalo = SunHalo.create(sun);
         gameObjects().addGameObject(sunHalo, Layer.BACKGROUND);
+
+        // haya ?
+        int place = 0 + Avatar.AVATAR_WIDTH;
+        Vector2 downRightCorner = new Vector2(place, terrain.groundHeightAt(0));
+        Avatar avatar = Avatar.create(downRightCorner,inputListener, imageReader);
+        gameObjects().addGameObject(avatar);
+
+
+        TextRenderable textRenderable = new TextRenderable(Float.toString(0));
+        GameObject numericCounter = new NumericCounter(textRenderable,avatar::getEnergy);
+        numericCounter.setTopLeftCorner(new Vector2(50, 50));
+        gameObjects().addGameObject(numericCounter, Layer.BACKGROUND );
+
+        int seed = 0;
+        Flora flora = new Flora(terrain::groundHeightAt, this.gameObjects(), windowDimensions,0);
+
     }
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+
+    }
+
 }
