@@ -32,9 +32,8 @@ public class Flora{
 
 //    public
 
-    public ArrayList<ArrayList<GameObject>> createInRange(int minX, int maxX){
-        ArrayList<GameObject> trunks = new ArrayList<>();
-        ArrayList<GameObject> leafs = new ArrayList<>();
+    public ArrayList<GameObject> createInRange(int minX, int maxX){
+        ArrayList<GameObject> trees = new ArrayList<>();
         minX = (int) Math.floor((double) minX / Block.SIZE) * Block.SIZE;
         maxX = (int) Math.floor((double) maxX / Block.SIZE) * Block.SIZE;
 
@@ -48,13 +47,10 @@ public class Flora{
             trunkHeight = (int)Math.floor((float)trunkHeight/ Block.SIZE) * Block.SIZE;
 
             if(randomFloat > 0.9f){
-                trunks.add(buildTree((float) i,trunkHeight));
-                leafs.addAll(buildTreeLeafs(i,trunkHeight)); // add all the leafs for the curr tree
+                trees.add(buildTree((float) i,trunkHeight));
+                trees.addAll(buildTreeLeafs(i,trunkHeight)); // add all the leafs for the curr tree
             }
         }
-        ArrayList<ArrayList<GameObject>> trees = new ArrayList<>();
-        trees.add(trunks);
-        trees.add(leafs);
         return trees;
     }
 

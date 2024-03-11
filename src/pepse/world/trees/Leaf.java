@@ -8,4 +8,9 @@ public class Leaf extends GameObject {
     public Leaf(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable) {
         super(topLeftCorner, dimensions, renderable);
     }
+
+    @Override
+    public boolean shouldCollideWith(GameObject other) {
+        return !(other.getTag().equals("avatar"));
+    }
 }
