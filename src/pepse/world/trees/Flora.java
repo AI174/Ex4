@@ -1,12 +1,11 @@
 package pepse.world.trees;
 
+import danogl.GameObject;
 import danogl.util.Vector2;
-import pepse.world.AvatarObserver;
 import pepse.world.Block;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -46,10 +45,8 @@ public class Flora{
      * @param maxX The maximum x.
      * @return A list of GameObjects representing the flora objects created.
      */
-    public ArrayList<ArrayList<AvatarObserver>> createInRange(int minX, int maxX){
-        ArrayList<AvatarObserver> trunks = new ArrayList<>();
-        ArrayList<AvatarObserver> leafs = new ArrayList<>();
-        ArrayList<AvatarObserver> fruits = new ArrayList<>();
+    public ArrayList<GameObject> createInRange(int minX, int maxX){
+        ArrayList<GameObject> trees = new ArrayList<>();
         minX = (int) Math.floor((double) minX / Block.SIZE) * Block.SIZE;
         maxX = (int) Math.floor((double) maxX / Block.SIZE) * Block.SIZE;
         for (int i = minX; i <= maxX; i+= Block.SIZE) {
@@ -62,12 +59,11 @@ public class Flora{
             trunkHeight = (int)Math.floor((float)trunkHeight/ Block.SIZE) * Block.SIZE;
 
             if(randomFloat > ADD_TREE_BOUND){
-                trunks.add(buildTree((float) i,trunkHeight));
-                leafs.addAll(buildTreeLeafs(i,trunkHeight));
-                fruits.addAll(buildTreeFruits(i,trunkHeight));
+                trees.add(buildTree((float) i,trunkHeight));
+                trees.addAll(buildTreeUpperComponents(i,trunkHeight));
             }
         }
-        return new ArrayList<>(Arrays.asList(trunks, leafs, fruits));
+        return trees;
     }
 
     private Trunk buildTree(float x, int trunkHeight){
@@ -76,35 +72,27 @@ public class Flora{
         return trunk;
     }
 
-    private List<AvatarObserver>buildTreeLeafs(int x, int trunkHeight) {
-        ArrayList<AvatarObserver> leafs= new ArrayList<>();
+    private List<GameObject> buildTreeUpperComponents(int x, int trunkHeight) {
+        ArrayList<GameObject> treeUpperComponents= new ArrayList<>();
         for (int i = (x-LEAF_SIZE*LEAVES_RANGE_ROW); i <=(x+LEAF_SIZE*LEAVES_RANGE_ROW) ; i+=LEAF_SIZE) {
             for (int j = (trunkHeight- LEAF_SIZE*LEAVES_RANGE_COL);
                  j<= (trunkHeight + LEAF_SIZE*LEAVES_RANGE_COL);j+=LEAF_SIZE){
+
                 float randomFloat = random.nextFloat();
                 if(randomFloat > ADD_LEAF_BOUND){
                     Leaf leaf = new Leaf(new Vector2(i, groundHeightAt.apply((float)i) - j),
                             Vector2.ONES.mult(LEAF_SIZE));
-                    leafs.add(leaf);
+                    treeUpperComponents.add(leaf);
                 }
-            }
-        }
-        return leafs;
-    }
 
-    private List<AvatarObserver>buildTreeFruits(int x, int trunkHeight) {
-        ArrayList<AvatarObserver> fruits= new ArrayList<>();
-        for (int i = (x-LEAF_SIZE*LEAVES_RANGE_ROW); i <=(x+LEAF_SIZE*LEAVES_RANGE_ROW) ; i+=LEAF_SIZE) {
-            for (int j = (trunkHeight- LEAF_SIZE*LEAVES_RANGE_COL);
-                 j<= (trunkHeight + LEAF_SIZE*LEAVES_RANGE_COL);j+=LEAF_SIZE){
                 float fruitRandomFloat = random.nextFloat();
                 if (fruitRandomFloat > ADD_FRUIT_BOUND){
                     Fruit fruit = new Fruit(new Vector2(i, groundHeightAt.apply((float)i) - j),
                             avatarAddEnergy);
-                    fruits.add(fruit);
+                    treeUpperComponents.add(fruit);
                 }
             }
         }
-        return fruits;
+        return treeUpperComponents;
     }
 }
