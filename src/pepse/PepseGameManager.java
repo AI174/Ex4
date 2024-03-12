@@ -99,7 +99,8 @@ public class PepseGameManager extends GameManager {
     }
 
     private void createTrees() {
-        Flora flora = new Flora(x ->(float)Math.floor(terrain.groundHeightAt(x) / Block.SIZE) * Block.SIZE);
+        Flora flora = new Flora(x ->(float)Math.floor(terrain.groundHeightAt(x) / Block.SIZE) * Block.SIZE,
+                avatar::addEnergy);
         List<GameObject> floraObjects = flora.createInRange(MIN_X, (int) windowDimensions.x());
 
         for (GameObject obj: floraObjects) {

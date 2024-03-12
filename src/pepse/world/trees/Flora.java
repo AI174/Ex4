@@ -6,6 +6,7 @@ import pepse.world.Block;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -26,13 +27,15 @@ public class Flora{
     private static final float ADD_FRUIT_BOUND = .9f;
     private final Random random =new Random();
     private final Function<Float, Float> groundHeightAt;
+    private final Consumer<Float> avatarAddEnergy;
 
     /**
      * Constructs a Flora object with the specified ground height function.
      * @param groundHeightAt A function that returns the ground height at a given x.
      */
-    public Flora(Function<Float, Float> groundHeightAt) {
+    public Flora(Function<Float, Float> groundHeightAt, Consumer<Float> avatarAddEnergy) {
         this.groundHeightAt = groundHeightAt;
+        this.avatarAddEnergy = avatarAddEnergy;
     }
 
     /**
@@ -84,7 +87,8 @@ public class Flora{
 
                 float fruitRandomFloat = random.nextFloat();
                 if (fruitRandomFloat > ADD_FRUIT_BOUND){
-                    Fruit fruit = new Fruit(new Vector2(i, groundHeightAt.apply((float)i) - j));
+                    Fruit fruit = new Fruit(new Vector2(i, groundHeightAt.apply((float)i) - j),
+                            avatarAddEnergy);
                     treeUpperComponents.add(fruit);
                 }
             }
