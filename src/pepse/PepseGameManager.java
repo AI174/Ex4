@@ -30,8 +30,8 @@ public class PepseGameManager extends GameManager {
     private static final String LEAF_TAG = "leaf";
     private static final String FRUIT_TAG = "fruit";
     private static final int LEAF_LAYER = Layer.DEFAULT - 1; // now it will not collide with the avatar
-    public static final int START_X = 0;
-    public static final int ENERGY_POSITION = 50;
+    private static final int START_X = 0;
+    private static final int ENERGY_POSITION = 50;
     private Vector2 windowDimensions;
     private Avatar avatar;
     private Terrain terrain;
