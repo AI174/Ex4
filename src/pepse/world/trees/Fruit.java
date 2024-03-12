@@ -26,6 +26,7 @@ public class Fruit extends GameObject implements AvatarObserver {
     private static final int GAME_CYCLE = 30;
     private static final float ADDED_ENERGY = 10f;
     private static final String Fruit_TAG = "fruit";
+    private static final String AVATAR_TAG = "avatar";
     private final Consumer<Float> avatarAddEnergy;
     private Color currFruitColor;
 
@@ -48,7 +49,7 @@ public class Fruit extends GameObject implements AvatarObserver {
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        if(other.getTag().equals("avatar") && renderer().getRenderable() != null){
+        if(other.getTag().equals(AVATAR_TAG) && renderer().getRenderable() != null){
             disappear();
             avatarAddEnergy.accept(ADDED_ENERGY);
         }

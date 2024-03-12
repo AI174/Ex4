@@ -27,6 +27,8 @@ public class PepseGameManager extends GameManager {
     private static final String LEAF_TAG = "leaf";
     private static final String FRUIT_TAG = "fruit";
     private static final int LEAF_LAYER = Layer.DEFAULT - 1; // now it will not collide with the avatar
+    public static final int START_X = 0;
+    public static final int ENERGY_POSITION = 50;
     private Vector2 windowDimensions;
     private Avatar avatar;
     private Terrain terrain;
@@ -86,15 +88,15 @@ public class PepseGameManager extends GameManager {
 
     private void createAvatar() {
         // making avatar
-        Vector2 downRightCorner = new Vector2(Avatar.AVATAR_WIDTH, terrain.groundHeightAt(0));
+        Vector2 downRightCorner = new Vector2(Avatar.AVATAR_WIDTH, terrain.groundHeightAt(START_X));
         avatar = Avatar.create(downRightCorner,inputListener, imageReader);
         gameObjects().addGameObject(avatar);
     }
     private void displayEnergy() {
         // making energy counter
-        TextRenderable textRenderable = new TextRenderable(Float.toString(0));
+        TextRenderable textRenderable = new TextRenderable(Float.toString(START_X));
         GameObject numericCounter = new NumericCounter(textRenderable,avatar::getEnergy);
-        numericCounter.setTopLeftCorner(new Vector2(50, 50));
+        numericCounter.setTopLeftCorner(new Vector2(ENERGY_POSITION, ENERGY_POSITION));
         gameObjects().addGameObject(numericCounter, Layer.UI);
     }
 
