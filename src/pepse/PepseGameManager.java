@@ -2,7 +2,6 @@ package pepse;
 
 import danogl.GameManager;
 import danogl.GameObject;
-import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
 import danogl.gui.ImageReader;
 import danogl.gui.SoundReader;
@@ -15,34 +14,59 @@ import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
 import pepse.world.trees.Flora;
-import pepse.world.trees.Trunk;
-
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+/**
+ * Manages the game flow and initializes game objects.
+ * @author adan.ir1, hayanat2002
+ */
 public class PepseGameManager extends GameManager {
-    public static final int MIN_X = 0;
+    private static final int MIN_X = 0;
     private static final float CYCLE_LENGTH = 30f;
     private Vector2 windowDimensions;
+    private Avatar avatar;
+    private Terrain terrain;
+    private ImageReader imageReader;
+    private UserInputListener inputListener;
 
+    /**
+     * Runs the game.
+     * @param args The command-line arguments.
+     */
     public static void main(String[] args) {
         new PepseGameManager().run();
     }
 
+    /**
+     * Initializes the game by creating and configuring game objects.
+     * @param imageReader An image reader instance.
+     * @param soundReader A sound reader instance.
+     * @param inputListener A user input listener instance.
+     * @param windowController A window controller instance.
+     */
     @Override
     public void initializeGame(ImageReader imageReader, SoundReader soundReader, UserInputListener
             inputListener, WindowController windowController) {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
-        // initialize fields
+        this.imageReader = imageReader;
+        this.inputListener = inputListener;
         this.windowDimensions = windowController.getWindowDimensions();
         // making sky
         GameObject sky = Sky.create(windowDimensions);
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
         // making ground
-        Terrain terrain = new Terrain(windowDimensions,(int)new Random().nextGaussian());
+        terrain = new Terrain(windowDimensions,(int)new Random().nextGaussian());
         for (Block block: terrain.createInRange(MIN_X,(int)windowDimensions.x())){
             gameObjects().addGameObject(block,Layer.STATIC_OBJECTS);
         }
+        createDayNight();
+        createAvatar();
+        displayEnergy();
+        createTrees();
+
+    }
+    private void createDayNight() {
         // making night
         GameObject night = Night.create(windowDimensions, CYCLE_LENGTH);
         // appear in front of the main gameplay or background elements
@@ -55,38 +79,40 @@ public class PepseGameManager extends GameManager {
         // making sun halo
         GameObject sunHalo = SunHalo.create(sun);
         gameObjects().addGameObject(sunHalo, Layer.BACKGROUND);
+    }
 
+    private void createAvatar() {
         // making avatar
-        int place = 0 + Avatar.AVATAR_WIDTH;
-        Vector2 downRightCorner = new Vector2(place, terrain.groundHeightAt(0));
-        Avatar avatar = Avatar.create(downRightCorner,inputListener, imageReader);
+        Vector2 downRightCorner = new Vector2(Avatar.AVATAR_WIDTH, terrain.groundHeightAt(0));
+        avatar = Avatar.create(downRightCorner,inputListener, imageReader);
         gameObjects().addGameObject(avatar);
-
+    }
+    private void displayEnergy() {
         // making energy counter
         TextRenderable textRenderable = new TextRenderable(Float.toString(0));
         GameObject numericCounter = new NumericCounter(textRenderable,avatar::getEnergy);
         numericCounter.setTopLeftCorner(new Vector2(50, 50));
         gameObjects().addGameObject(numericCounter, Layer.BACKGROUND );
+    }
 
-        // making trees
-        Flora flora = new Flora(x -> (float)Math.floor(terrain.groundHeightAt(x) / Block.SIZE) * Block.SIZE,
-                 windowDimensions);
+    private void createTrees() {
+        Flora flora = new Flora(x ->(float)Math.floor(terrain.groundHeightAt(x) / Block.SIZE) * Block.SIZE);
+        List<GameObject> floraObjects = flora.createInRange(MIN_X, (int) windowDimensions.x());
 
-        for (GameObject obj:flora.createInRange(MIN_X, (int) windowDimensions.x())) {
+        for (GameObject obj: floraObjects) {
+            avatar.registerObserver((AvatarObserver) obj);  //down casting - must change
+
             if (obj.getTag().equals("leaf")){
-                gameObjects().addGameObject(obj,Layer.FOREGROUND);
+                gameObjects().addGameObject(obj);
+            }
+            if (obj.getTag().equals("fruit")){
+                gameObjects().addGameObject(obj);
             }
             else {
                 gameObjects().addGameObject(obj);
             }
 
         }
-
-    }
-    @Override
-    public void update(float deltaTime) {
-        super.update(deltaTime);
-
     }
 
 }
