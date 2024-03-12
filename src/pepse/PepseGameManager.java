@@ -14,6 +14,8 @@ import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
 import pepse.world.trees.Flora;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -101,22 +103,25 @@ public class PepseGameManager extends GameManager {
     private void createTrees() {
         Flora flora = new Flora(x ->(float)Math.floor(terrain.groundHeightAt(x) / Block.SIZE) * Block.SIZE,
                 avatar::addEnergy);
-        List<GameObject> floraObjects = flora.createInRange(MIN_X, (int) windowDimensions.x());
+        ArrayList<ArrayList<AvatarObserver>> floraObjects = flora.createInRange(MIN_X,
+                (int) windowDimensions.x());
+        ArrayList<AvatarObserver> trunks = floraObjects.get(0);
+        ArrayList<AvatarObserver> leafs = floraObjects.get(1);
+        ArrayList<AvatarObserver> fruits = floraObjects.get(2);
 
-        for (GameObject obj: floraObjects) {
-            avatar.registerObserver((AvatarObserver) obj);  //down casting - must change
-
-            if (obj.getTag().equals(LEAF_TAG)){
-                gameObjects().addGameObject(obj, LEAF_LAYER);
-            }
-            if (obj.getTag().equals(FRUIT_TAG)){
-                gameObjects().addGameObject(obj);
-            }
-            else {
-                gameObjects().addGameObject(obj,Layer.STATIC_OBJECTS);
-            }
-
+        for (AvatarObserver obj :trunks){
+            avatar.registerObserver(obj);
+            gameObjects().addGameObject((GameObject)obj,Layer.STATIC_OBJECTS);
         }
+        for (AvatarObserver obj :leafs){
+            avatar.registerObserver(obj);
+            gameObjects().addGameObject((GameObject)obj,LEAF_LAYER);
+        }
+        for (AvatarObserver obj :fruits){
+            avatar.registerObserver(obj);
+            gameObjects().addGameObject((GameObject)obj);
+        }
+
     }
 
 }
