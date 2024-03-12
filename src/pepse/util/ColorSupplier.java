@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.Random;
 
 /**
- * Provides procedurally-generated colors around a pivot.
+ * Provides procedurally - generated colors around a pivot.
  * @author Dan Nirel
  */
 public final class ColorSupplier {
