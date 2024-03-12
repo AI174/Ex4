@@ -26,6 +26,7 @@ public class PepseGameManager extends GameManager {
     private static final float CYCLE_LENGTH = 30f;
     private static final String LEAF_TAG = "leaf";
     private static final String FRUIT_TAG = "fruit";
+    private static final int LEAF_LAYER = Layer.DEFAULT - 1; // now it will not collide with the avatar
     private Vector2 windowDimensions;
     private Avatar avatar;
     private Terrain terrain;
@@ -94,7 +95,7 @@ public class PepseGameManager extends GameManager {
         TextRenderable textRenderable = new TextRenderable(Float.toString(0));
         GameObject numericCounter = new NumericCounter(textRenderable,avatar::getEnergy);
         numericCounter.setTopLeftCorner(new Vector2(50, 50));
-        gameObjects().addGameObject(numericCounter, Layer.BACKGROUND );
+        gameObjects().addGameObject(numericCounter, Layer.UI);
     }
 
     private void createTrees() {
@@ -105,13 +106,13 @@ public class PepseGameManager extends GameManager {
             avatar.registerObserver((AvatarObserver) obj);  //down casting - must change
 
             if (obj.getTag().equals(LEAF_TAG)){
-                gameObjects().addGameObject(obj);
+                gameObjects().addGameObject(obj, LEAF_LAYER);
             }
             if (obj.getTag().equals(FRUIT_TAG)){
                 gameObjects().addGameObject(obj);
             }
             else {
-                gameObjects().addGameObject(obj);
+                gameObjects().addGameObject(obj,Layer.STATIC_OBJECTS);
             }
 
         }
