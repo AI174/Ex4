@@ -22,8 +22,11 @@ import java.util.Random;
  * @author adan.ir1, hayanat2002
  */
 public class PepseGameManager extends GameManager {
+    /**
+     * Game Cycle Length (30sc).
+     */
+    public static final float CYCLE_LENGTH = 30f;
     private static final int MIN_X = 0;
-    private static final float CYCLE_LENGTH = 30f;
     private static final String LEAF_TAG = "leaf";
     private static final String FRUIT_TAG = "fruit";
     private static final int LEAF_LAYER = Layer.DEFAULT - 1; // now it will not collide with the avatar
