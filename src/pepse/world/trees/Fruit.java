@@ -9,7 +9,6 @@ import pepse.world.Avatar;
 import pepse.world.AvatarObserver;
 import pepse.world.Block;
 import java.awt.Color;
-import java.util.function.Consumer;
 
 /**
  * Represents a fruit object in the game world.
@@ -26,18 +25,16 @@ public class Fruit extends GameObject implements AvatarObserver {
     private static final int GAME_CYCLE = 30;
     private static final float ADDED_ENERGY = 10f;
     private static final String Fruit_TAG = "fruit";
-    private final Consumer<Float> energyConsumer;
     private Color currFruitColor;
 
     /**
      * Constructs a fruit object with the specified position.
      * @param topLeftCorner The position of the fruit, in window coordinates (pixels).
      */
-    public Fruit(Vector2 topLeftCorner, Consumer<Float> energyConsumer) {
+    public Fruit(Vector2 topLeftCorner) {
         super(topLeftCorner, Vector2.ONES.mult(FRUIT_SIZE), new OvalRenderable(DEFAULT_FRUIT_COLOR));
         this.setTag(Fruit_TAG);
         currFruitColor = DEFAULT_FRUIT_COLOR;
-        this.energyConsumer = energyConsumer;
     }
 
     /**
@@ -50,8 +47,7 @@ public class Fruit extends GameObject implements AvatarObserver {
         super.onCollisionEnter(other, collision);
         if(other.getTag().equals("avatar") && renderer() != null){
             disappear();
-            energyConsumer.accept(ADDED_ENERGY);
-//            ((Avatar)other).addEnergy(ADDED_ENERGY); // downCasting bad !!!!!!!!!!!!!!!!!!!!!!
+            ((Avatar)other).addEnergy(ADDED_ENERGY); // downCasting bad !!!!!!!!!!!!!!!!!!!!!!
         }
     }
 
