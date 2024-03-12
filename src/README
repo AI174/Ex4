@@ -17,7 +17,7 @@ adan.ir1, hayanat2002
 
 ----------------------------------------------------------------------------------------------------------
 2. Connections between classes:
-    The Flora Class uses all the classes above (Fruit,Leaf,Trunk) in order to represent the flora game object
+   The Flora Class uses all the classes above (Fruit,Leaf,Trunk) in order to represent the flora game object
     thus the relation is Dependency.
 
 ----------------------------------------------------------------------------------------------------------

@@ -107,8 +107,8 @@ public class Avatar extends GameObject {
      * Registers an observer to observe the avatar's actions.
      * @param observer The observer to register.
      */
-    public void registerObserver(GameObject observer){
-        observerList.add((AvatarObserver) observer);
+    public void registerObserver(AvatarObserver observer){
+        observerList.add(observer);
     }
     private void move() {
         float xVel = 0;

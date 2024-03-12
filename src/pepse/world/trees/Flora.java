@@ -2,6 +2,7 @@ package pepse.world.trees;
 
 import danogl.GameObject;
 import danogl.util.Vector2;
+import pepse.world.AvatarObserver;
 import pepse.world.Block;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +26,21 @@ public class Flora{
     private static final float ADD_TREE_BOUND = .9f;
     private static final float ADD_LEAF_BOUND = .2f;
     private static final float ADD_FRUIT_BOUND = .9f;
+    private static final int AVATAR_X_LOCATION = 0;
     private final Random random =new Random();
     private final Function<Float, Float> groundHeightAt;
     private final Consumer<Float> avatarAddEnergy;
+    private final Consumer<AvatarObserver> avatarRegisterObserver;
 
     /**
      * Constructs a Flora object with the specified ground height function.
      * @param groundHeightAt A function that returns the ground height at a given x.
      */
-    public Flora(Function<Float, Float> groundHeightAt, Consumer<Float> avatarAddEnergy) {
+    public Flora(Function<Float, Float> groundHeightAt, Consumer<Float> avatarAddEnergy,
+                 Consumer<AvatarObserver> avatarRegisterObserver) {
         this.groundHeightAt = groundHeightAt;
         this.avatarAddEnergy = avatarAddEnergy;
+        this.avatarRegisterObserver = avatarRegisterObserver;
     }
 
     /**
@@ -50,7 +55,7 @@ public class Flora{
         minX = (int) Math.floor((double) minX / Block.SIZE) * Block.SIZE;
         maxX = (int) Math.floor((double) maxX / Block.SIZE) * Block.SIZE;
         for (int i = minX; i <= maxX; i+= Block.SIZE) {
-            if(i == 0){ // because the avatar is there
+            if(i == AVATAR_X_LOCATION){ // because the avatar is there
                 continue;
             }
             float randomFloat = random.nextFloat();
@@ -59,16 +64,17 @@ public class Flora{
             trunkHeight = (int)Math.floor((float)trunkHeight/ Block.SIZE) * Block.SIZE;
 
             if(randomFloat > ADD_TREE_BOUND){
-                trees.add(buildTree((float) i,trunkHeight));
+                trees.add(buildTrunk((float) i,trunkHeight));
                 trees.addAll(buildTreeUpperComponents(i,trunkHeight));
             }
         }
         return trees;
     }
 
-    private Trunk buildTree(float x, int trunkHeight){
+    private Trunk buildTrunk(float x, int trunkHeight){
         Trunk trunk = new Trunk(new Vector2(x, groundHeightAt.apply(x)),trunkHeight);
         trunk.setTopLeftCorner(new Vector2(x, groundHeightAt.apply(x) - trunkHeight));
+        avatarRegisterObserver.accept(trunk);
         return trunk;
     }
 
@@ -83,6 +89,7 @@ public class Flora{
                     Leaf leaf = new Leaf(new Vector2(i, groundHeightAt.apply((float)i) - j),
                             Vector2.ONES.mult(LEAF_SIZE));
                     treeUpperComponents.add(leaf);
+                    avatarRegisterObserver.accept(leaf);
                 }
 
                 float fruitRandomFloat = random.nextFloat();
@@ -90,6 +97,7 @@ public class Flora{
                     Fruit fruit = new Fruit(new Vector2(i, groundHeightAt.apply((float)i) - j),
                             avatarAddEnergy);
                     treeUpperComponents.add(fruit);
+                    avatarRegisterObserver.accept(fruit);
                 }
             }
         }
