@@ -7,7 +7,7 @@ import danogl.util.Vector2;
 /**
  * Represents a block in the game world.
  * @author adan.ir1, hayanat2002
- * @see danogl.GameObject
+ * @see GameObject
  */
 public class Block extends GameObject {
     /**
