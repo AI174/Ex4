@@ -1,0 +1,29 @@
+adan.ir1, hayanat2002
+211508353,325098440
+
+----------------------------------------------------------------------------------------------------------
+1. Classes in the trees package:
+    a)Fruit Class: represents a fruit object in the game world, It creat a fruit with the asked effects
+    also this class handle the collision with the avatar (change its color).
+
+    b)Leaf Class: represents a leaf object in the game world, It creat a leaf with the asked effects
+     (turns around itself 90 degree).
+
+    c)Trunk Class: represents a trunk object in the game world, It creat a static trunk
+     with the asked effects (change its color).
+
+    d)Flora Class: represents a flora in the game world, including trees, leaves, and fruits.
+    it handles all the above classes and creates them (a-c).
+
+----------------------------------------------------------------------------------------------------------
+2. Connections between classes:
+    The Flora Class uses all the classes above (Fruit,Leaf,Trunk) in order to represent the flora game object
+    thus the relation is Dependency.
+
+----------------------------------------------------------------------------------------------------------
+3. Used Design Pattern:
+    We used the Observer design pattern in order to establish a relationship between the avatar (subject)
+    and the Fruit,Leaf,Trunk (observers), In order to update the observers when the avatar jumps.
+    As asked in the exercise we make specific effect when the avatar jumps.
+
+----------------------------------------------------------------------------------------------------------
