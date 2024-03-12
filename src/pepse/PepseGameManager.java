@@ -24,6 +24,8 @@ import java.util.Random;
 public class PepseGameManager extends GameManager {
     private static final int MIN_X = 0;
     private static final float CYCLE_LENGTH = 30f;
+    private static final String LEAF_TAG = "leaf";
+    private static final String FRUIT_TAG = "fruit";
     private Vector2 windowDimensions;
     private Avatar avatar;
     private Terrain terrain;
@@ -102,10 +104,10 @@ public class PepseGameManager extends GameManager {
         for (GameObject obj: floraObjects) {
             avatar.registerObserver((AvatarObserver) obj);  //down casting - must change
 
-            if (obj.getTag().equals("leaf")){
+            if (obj.getTag().equals(LEAF_TAG)){
                 gameObjects().addGameObject(obj);
             }
-            if (obj.getTag().equals("fruit")){
+            if (obj.getTag().equals(FRUIT_TAG)){
                 gameObjects().addGameObject(obj);
             }
             else {
