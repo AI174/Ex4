@@ -21,8 +21,8 @@ public class Flora{
     private static final int TRUNK_HEIGHT_UPPER_BOUND = 180;
     private static final int TRUNK_HEIGHT_LOWER_BOUND = 100;
     private static final int LEAF_SIZE = Block.SIZE;
-    private static final int LEAVES_RANGE_ROW = 3;
-    private static final int LEAVES_RANGE_COL = 2;
+    private static final int LEAVES_RANGE_ROW = 2;
+    private static final int LEAVES_RANGE_COL = 1;
     private static final float ADD_TREE_BOUND = .9f;
     private static final float ADD_LEAF_BOUND = .2f;
     private static final float ADD_FRUIT_BOUND = .9f;
@@ -86,15 +86,14 @@ public class Flora{
 
                 float randomFloat = random.nextFloat();
                 if(randomFloat > ADD_LEAF_BOUND){
-                    Leaf leaf = new Leaf(new Vector2(i, groundHeightAt.apply((float)i) - j),
+                    Leaf leaf = new Leaf(new Vector2(i, groundHeightAt.apply((float)i) - (j + LEAF_SIZE)),
                             Vector2.ONES.mult(LEAF_SIZE));
                     treeUpperComponents.add(leaf);
                     avatarRegisterObserver.accept(leaf);
                 }
-
                 float fruitRandomFloat = random.nextFloat();
                 if (fruitRandomFloat > ADD_FRUIT_BOUND){
-                    Fruit fruit = new Fruit(new Vector2(i, groundHeightAt.apply((float)i) - j),
+                    Fruit fruit = new Fruit(new Vector2(i, groundHeightAt.apply((float)i) - (j + LEAF_SIZE)),
                             avatarAddEnergy);
                     treeUpperComponents.add(fruit);
                     avatarRegisterObserver.accept(fruit);

@@ -29,12 +29,19 @@ public class Avatar extends GameObject {
     private static final float VELOCITY_Y = -450;
     private static final float GRAVITY = 500;
     private static final float CHANGING_TIME = .4f;
+    private static final float MAX_ENERGY = 100f;
+    private static final int NUM_IMAGES_OF_NOT_MOVING_AVATAR = 4;
+    private static final int NUM_IMAGES_OF_SIDE_AVATAR = 6;
+    private static final int NUM_IMAGES_OF_JUMPING_AVATAR = 4;
+    private static final float SIDE_MOVING_ENERGY = .5f;
+    private static final float JUMPING_ENERGY = 10f;
     private static final String AVATAR_TAG = "avatar";
     private static final String AVATAR_IMAGE = "assets/idle_0.png";
     private static final String AVATAR_ITH_IMAGE = "assets/idle_";
     private static final String PNG = ".png";
     private static final String AVATAR_JUMP_IMAGE = "assets/jump_";
     private static final String AVATAR_RAN_IMAGE = "assets/run_";
+    private static final float STANDING_ENERGY = 1f;
     private static Renderable imageRenderable;
     private final UserInputListener inputListener;
     private final ImageReader imageReader;
@@ -58,7 +65,6 @@ public class Avatar extends GameObject {
         transform().setAccelerationY(GRAVITY);
         this.setTag(AVATAR_TAG);
         initializeAnimation();
-
     }
     /**
      * Creates an avatar object with the specified position, input listener, and image reader.
@@ -73,7 +79,6 @@ public class Avatar extends GameObject {
         Avatar.imageRenderable = imageReader.readImage(AVATAR_IMAGE, true);
         Avatar avatar = new Avatar(downRightCorner, inputListener, imageReader);
         avatar.physics().preventIntersectionsFromDirection(Vector2.ZERO);
-
         return avatar;
 
     }
@@ -94,7 +99,7 @@ public class Avatar extends GameObject {
      * @param n The amount of energy to add.
      */
     public void addEnergy(float n){
-        energy = Math.min(100, energy + n);
+        energy = Math.min(MAX_ENERGY, energy + n);
     }
     /**
      * Gets the energy
@@ -112,47 +117,46 @@ public class Avatar extends GameObject {
     }
     private void move() {
         float xVel = 0;
-        if(inputListener.isKeyPressed(KeyEvent.VK_LEFT) && energy >= .5f ) {
+        if(inputListener.isKeyPressed(KeyEvent.VK_LEFT) && energy >= SIDE_MOVING_ENERGY ) {
             xVel -= VELOCITY_X;
             renderer().setIsFlippedHorizontally(true);
-            energy -= .5f;
+            energy -= SIDE_MOVING_ENERGY;
         }
 
-        if(inputListener.isKeyPressed(KeyEvent.VK_RIGHT) && energy >= .5f ) {
+        if(inputListener.isKeyPressed(KeyEvent.VK_RIGHT) && energy >= SIDE_MOVING_ENERGY ) {
             xVel += VELOCITY_X;
             renderer().setIsFlippedHorizontally(false);
-            energy -= .5f;
+            energy -= SIDE_MOVING_ENERGY;
 
         }
         transform().setVelocityX(xVel);
 
-        if(inputListener.isKeyPressed(KeyEvent.VK_SPACE) && getVelocity().y() == 0 && energy >= 10){
+        if(inputListener.isKeyPressed(KeyEvent.VK_SPACE) &&
+                getVelocity().y() == 0 && energy >= JUMPING_ENERGY){
             transform().setVelocityY(VELOCITY_Y);
-            energy -= 10f;
+            energy -= JUMPING_ENERGY;
             updateObservers();
         }
 
         if(getVelocity().isZero()){
-            energy = Math.min(100f, energy + 1);
+            energy = Math.min(MAX_ENERGY, energy + STANDING_ENERGY);
         }
     }
     private void initializeAnimation(){
-        Renderable[] notMovingArr = new Renderable[4];
-        for (int i = 0; i < 4; i++) {
-            notMovingArr[i] = imageReader.readImage(AVATAR_ITH_IMAGE +i+ PNG,
-                    true);
+        Renderable[] notMovingArr = new Renderable[NUM_IMAGES_OF_NOT_MOVING_AVATAR];
+        for (int i = 0; i < notMovingArr.length; i++) {
+            notMovingArr[i] = imageReader.readImage(AVATAR_ITH_IMAGE +i+ PNG, true);
         }
 
-        Renderable[] upDownArr = new Renderable[4];
-        for (int i = 0; i < 4; i++) {
+        Renderable[] upDownArr = new Renderable[NUM_IMAGES_OF_JUMPING_AVATAR];
+        for (int i = 0; i < upDownArr.length; i++) {
             upDownArr[i] = imageReader.readImage(AVATAR_JUMP_IMAGE +i+PNG, true);
         }
 
-        Renderable[] sideArr= new Renderable[6];
-        for (int i = 0; i < 6; i++) {
+        Renderable[] sideArr= new Renderable[NUM_IMAGES_OF_SIDE_AVATAR];
+        for (int i = 0; i < sideArr.length; i++) {
             sideArr[i] = imageReader.readImage(AVATAR_RAN_IMAGE +i+PNG, true);
         }
-
         notMovingAnimation = new AnimationRenderable(notMovingArr, CHANGING_TIME);
         upDownAnimation = new AnimationRenderable(upDownArr, CHANGING_TIME);
         sideAnimation = new AnimationRenderable(sideArr, CHANGING_TIME);

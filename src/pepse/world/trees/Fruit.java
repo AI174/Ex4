@@ -5,7 +5,6 @@ import danogl.collisions.Collision;
 import danogl.components.ScheduledTask;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.util.Vector2;
-import pepse.PepseGameManager;
 import pepse.world.Avatar;
 import pepse.world.AvatarObserver;
 import pepse.world.Block;
@@ -24,9 +23,9 @@ public class Fruit extends GameObject implements AvatarObserver {
     private static final Color DEFAULT_FRUIT_COLOR = Color.red;
     private static final Color SECOND_FRUIT_COLOR = Color.yellow;
     private static final int FRUIT_SIZE = Block.SIZE;
+    private static final int GAME_CYCLE = 30;
     private static final float ADDED_ENERGY = 10f;
     private static final String Fruit_TAG = "fruit";
-    private static final String AVATAR_TAG = "avatar";
     private final Consumer<Float> avatarAddEnergy;
     private Color currFruitColor;
 
@@ -49,7 +48,7 @@ public class Fruit extends GameObject implements AvatarObserver {
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        if(other.getTag().equals(AVATAR_TAG) && renderer().getRenderable() != null){
+        if(other.getTag().equals("avatar") && renderer().getRenderable() != null){
             disappear();
             avatarAddEnergy.accept(ADDED_ENERGY);
         }
@@ -65,7 +64,7 @@ public class Fruit extends GameObject implements AvatarObserver {
 
     private void disappear(){
         this.renderer().setRenderable(null);
-        new ScheduledTask(this, PepseGameManager.CYCLE_LENGTH, false,
+        new ScheduledTask(this, GAME_CYCLE, false,
                 ()-> renderer().setRenderable(new OvalRenderable(currFruitColor)));
     }
 

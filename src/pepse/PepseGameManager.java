@@ -22,16 +22,11 @@ import java.util.Random;
  * @author adan.ir1, hayanat2002
  */
 public class PepseGameManager extends GameManager {
-    /**
-     * Game Cycle Length (30sc).
-     */
-    public static final float CYCLE_LENGTH = 30f;
     private static final int MIN_X = 0;
+    private static final float CYCLE_LENGTH = 30f;
     private static final String LEAF_TAG = "leaf";
     private static final String FRUIT_TAG = "fruit";
     private static final int LEAF_LAYER = Layer.DEFAULT - 1; // now it will not collide with the avatar
-    private static final int START_X = 0;
-    private static final int ENERGY_POSITION = 50;
     private Vector2 windowDimensions;
     private Avatar avatar;
     private Terrain terrain;
@@ -91,15 +86,15 @@ public class PepseGameManager extends GameManager {
 
     private void createAvatar() {
         // making avatar
-        Vector2 downRightCorner = new Vector2(Avatar.AVATAR_WIDTH, terrain.groundHeightAt(START_X));
+        Vector2 downRightCorner = new Vector2(Avatar.AVATAR_WIDTH, terrain.groundHeightAt(0));
         avatar = Avatar.create(downRightCorner,inputListener, imageReader);
         gameObjects().addGameObject(avatar);
     }
     private void displayEnergy() {
         // making energy counter
-        TextRenderable textRenderable = new TextRenderable(Float.toString(START_X));
+        TextRenderable textRenderable = new TextRenderable(Float.toString(0));
         GameObject numericCounter = new NumericCounter(textRenderable,avatar::getEnergy);
-        numericCounter.setTopLeftCorner(new Vector2(ENERGY_POSITION, ENERGY_POSITION));
+        numericCounter.setTopLeftCorner(new Vector2(50, 50));
         gameObjects().addGameObject(numericCounter, Layer.UI);
     }
 
