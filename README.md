@@ -12,9 +12,8 @@ Simulated day-night cycle affecting gameplay.
 Dynamic ecosystems with growing trees and changing weather.
 Modular architecture for easy customization and future expansions.
 
-![Screenshot 2024-05-01 004622](https://github.com/AI174/Ex4/assets/159155481/63b00756-889b-4a4e-8458-603c2d8150f2)
-
-
+   
+small demo:
 
 https://github.com/AI174/Ex4/assets/159155481/2cb805bd-fd9d-49f0-a825-7ce529e9fdda
 
